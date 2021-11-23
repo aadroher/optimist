@@ -26,31 +26,34 @@ data Meeting = Meeting
   }
   deriving (Show, Eq)
 
-nameToNum :: M.Map DayOfWeek Int
+nameToNum :: M.Map OrderedDayOfWeek Int
 nameToNum =
   M.fromList
-    [ (Monday, 0),
-      (Tuesday, 1),
-      (Wednesday, 2),
-      (Thursday, 3),
-      (Friday, 4),
-      (Saturday, 5),
-      (Sunday, 6)
+    [ (OrderedDayOfWeek Monday, 0),
+      (OrderedDayOfWeek Tuesday, 1),
+      (OrderedDayOfWeek Wednesday, 2),
+      (OrderedDayOfWeek Thursday, 3),
+      (OrderedDayOfWeek Friday, 4),
+      (OrderedDayOfWeek Saturday, 5),
+      (OrderedDayOfWeek Sunday, 6)
     ]
 
-instance Ord DayOfWeek where
-  compare d0 d1 = compare (nameToNum M'.! d0) (nameToNum M'.! d1)
+newtype OrderedDayOfWeek = OrderedDayOfWeek DayOfWeek
+  deriving (Eq)
 
-defaultDaysOfWeek :: Set DayOfWeek
+instance Ord OrderedDayOfWeek where
+  compare (OrderedDayOfWeek d0) (OrderedDayOfWeek d1) = compare (nameToNum M'.! OrderedDayOfWeek d0) (nameToNum M'.! OrderedDayOfWeek d1)
+
+defaultDaysOfWeek :: Set OrderedDayOfWeek
 defaultDaysOfWeek =
   S.fromList
-    [ Monday,
-      Tuesday,
-      Wednesday,
-      Thursday,
-      Friday,
-      Saturday,
-      Sunday
+    [ OrderedDayOfWeek Monday,
+      OrderedDayOfWeek Tuesday,
+      OrderedDayOfWeek Wednesday,
+      OrderedDayOfWeek Thursday,
+      OrderedDayOfWeek Friday,
+      OrderedDayOfWeek Saturday,
+      OrderedDayOfWeek Sunday
     ]
 
 data Calendar = Calendar
